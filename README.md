@@ -414,88 +414,6 @@ openflow_v4
    - NO Packet_In messages (flow rule handles it)
 
 ---
-
-## 🎓 Viva Preparation
-
-### Key Concepts to Explain:
-
-#### **1. What is packet_in?**
-A packet_in event occurs when a switch receives a packet that doesn't match any flow rule in its flow table. The switch sends this packet to the controller for processing. In OpenFlow, this is represented by the `OFPT_PACKET_IN` message.
-
-#### **2. How are flow rules installed?**
-Flow rules are installed using `OFPFlowMod` messages sent from the controller to the switch. Each rule contains:
-- **Match fields:** Criteria to match packets (e.g., IP source, destination port)
-- **Actions:** What to do with matched packets (e.g., forward, drop)
-- **Priority:** Higher priority rules are checked first
-- **Timeouts:** Optional idle/hard timeouts for rule expiration
-
-#### **3. Difference between match and action?**
-- **Match:** Defines the criteria to identify packets (e.g., `ipv4_src=10.0.0.3`)
-- **Action:** Defines what to do with matched packets (e.g., `drop`, `output:2`)
-- Example: "If source IP is 10.0.0.3 (match), then drop the packet (action)"
-
-#### **4. What happens without controller?**
-Without a controller:
-- Existing flow rules continue to work until they timeout
-- New flows cannot be established (table-miss packets have nowhere to go)
-- Switch becomes a "dumb" forwarding device
-- No dynamic adaptation or learning
-
-#### **5. What is SDN?**
-Software-Defined Networking (SDN) is a network architecture that:
-- **Separates control plane** (decision making) from **data plane** (packet forwarding)
-- Uses a **centralized controller** to program switch behavior
-- Enables **programmatic network management** through APIs
-- Provides **dynamic** and **flexible** network control
-
-#### **6. Role of controller?**
-The controller is the "brain" of SDN:
-- Makes forwarding decisions for unknown flows
-- Installs flow rules on switches
-- Monitors network state and statistics
-- Implements network policies (security, QoS, routing)
-- Responds to network events and failures
-
-#### **7. What is a flow rule?**
-A flow rule is an entry in a switch's flow table consisting of:
-1. **Match fields:** Packet header fields to match (Layer 2-4)
-2. **Priority:** Determines rule precedence
-3. **Counters:** Track packets/bytes matched
-4. **Instructions/Actions:** What to do with matched packets
-5. **Timeouts:** When to remove the rule
-6. **Cookie:** Opaque identifier for controller
-
-#### **8. How does your logic affect network behavior?**
-Our implementation affects behavior by:
-- **Detection:** Monitors packet rates per source IP
-- **Response:** Dynamically installs high-priority blocking rules
-- **Isolation:** Blocks only malicious hosts, others unaffected
-- **Logging:** Records all security events for audit
-- **Adaptation:** Rules timeout and can be reinstalled if behavior continues
-
----
-
-## 📚 References
-
-### Documentation:
-1. Ryu SDN Framework Documentation - https://ryu.readthedocs.io/
-2. OpenFlow 1.3 Specification - https://www.opennetworking.org/
-3. Mininet Documentation - http://mininet.org/
-
-### Code References:
-1. Ryu Simple Switch 13 Example - Base learning switch implementation
-2. OpenFlow Protocol - Flow rule structure and packet_in handling
-3. Python Collections - Used for traffic statistics tracking
-
-### Tutorials:
-1. "SDN with OpenFlow" - Coursera/edX materials
-2. "Mininet Walkthrough" - Official Mininet tutorial
-3. "Ryu Controller Tutorial" - Ryu SDN Framework guide
-
----
-
-## 🎯 Expected Deliverables Checklist
-
 ### ✅ Completed Items:
 
 1. **Working Demonstration**
@@ -506,10 +424,6 @@ Our implementation affects behavior by:
 2. **Source Code on GitHub**
    - ✓ `dynamic_blocking_controller.py` - Main controller logic
    - ✓ `topology.py` - Mininet topology
-   - ✓ `attack_simulation.py` - Attack testing script
-   - ✓ `test_scenarios.sh` - Guided test execution
-   - ✓ Clean and modular code
-   - ✓ Proper comments and documentation
 
 3. **README Documentation**
    - ✓ Problem statement
@@ -524,18 +438,6 @@ Our implementation affects behavior by:
    - ✓ Log file examples
    - ✓ Wireshark analysis guidance
 
-### 📋 Evaluation Coverage:
-
-| Component | Score | Coverage |
-|-----------|-------|----------|
-| Problem Understanding & Setup | 4/4 | ✓ Clear problem statement, topology justification |
-| SDN Logic & Flow Rules | 6/6 | ✓ packet_in handling, match-action design, priorities |
-| Functional Correctness | 6/6 | ✓ Blocking works, forwarding works, clear demo |
-| Performance Analysis | 5/5 | ✓ Latency, throughput, flow stats, packet counts |
-| Explanation & Viva | 4/4 | ✓ Complete concept coverage, validation |
-| **Total** | **25/25** | **All requirements met** |
-
----
 
 ## 🚀 Quick Start Commands
 
@@ -562,29 +464,4 @@ mininet> h3 ping -c 5 h1            # Verify blocking
 mininet> h1 ping -c 5 h2            # Verify normal traffic
 ```
 
----
 
-## 📝 License
-
-This project is created for educational purposes as part of the SDN Mininet Orange Problem assignment.
-
----
-
-## 👤 Author
-
-**[Your Name]**
-- GitHub: [@yourusername](https://github.com/yourusername)
-- Email: your.email@example.com
-
----
-
-## 🙏 Acknowledgments
-
-- Course Instructor and TAs
-- Ryu SDN Framework Community
-- Mininet Development Team
-- OpenFlow Community
-
----
-
-**Last Updated:** January 2025
